@@ -1,5 +1,7 @@
 'use strict'
-
+/**
+ * se implementa express para ejecutar un servidor
+ */
 var express = require('express')
 var app = express()
 
