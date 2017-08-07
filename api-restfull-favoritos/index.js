@@ -14,4 +14,5 @@ app.use(bodyParser.json())
 
 app.listen(port, function() {
     console.log(`Api rest favoritos corriendo por el puerto ${port}`)
+    console.log('nodemon corriendo')
 })
