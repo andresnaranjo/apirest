@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json())
 
-app.get('/prueba/:nombre?', function(req, res) {
+app.get('/prueba/:nombre?', (req, res) => {
     var nombre = 'indefinido'
     if (req.params.nombre) {
         nombre = req.params.nombre
