@@ -1,0 +1,14 @@
+{
+  "name": "api-restfull-favoritos",
+  "version": "1.0.0",
+  "description": "proyecto de api resfull favoritos",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "andres naranjo",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.15.4"
+  }
+}
