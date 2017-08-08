@@ -1,45 +1,82 @@
 'use strict'
 
-function prueba(req, res) {
-    var nombre = 'indefinido'
-    if (req.params.nombre) {
-        nombre = req.params.nombre
-    }
-
-    res.status(200).send({
-        data: [2, 3, 4],
-        message: 'devolver desde nodejs',
-        name: nombre
-    })
-}
+var Favorito = require('../models/favorito.js')
 
 function getFavorito(req, res) {
-    var favoritoId = req.params.id
-    res.status(200).send({ mensaje: 'desde la api favorito ' + favoritoId })
+
+    var id = req.params.id
+
+    Favorito.findById(id, (err, data) => {
+        if (err) {
+            res.status(500).send({ err: 'Error al devolver el registro' })
+        }
+
+        if (!data) {
+            res.status(404).send({ err: 'no existen registros' })
+        }
+
+        res.status(200).send(data)
+    })
+
 }
 
 function getFavoritos(req, res) {
-    res.status(200).send({ data: 'datos' })
+    Favorito.find({}).sort('title').exec((err, data) => {
+        if (err) {
+            res.status(500).send({ error: 'Error al traer datos' })
+        }
+
+        if (!data) {
+            res.status(404).send({ error: 'No existen registros' })
+        }
+
+        res.status(200).send({ data })
+    })
 }
 
 function saveFavorito(req, res) {
+    var favoritoModelo = new Favorito()
     var params = req.body
-    res.status(200).send({ save: true, favorito: params })
+
+    favoritoModelo.title = params.title
+    favoritoModelo.url = params.url
+    favoritoModelo.description = params.description
+
+    favoritoModelo.save((err, data) => {
+        if (err) {
+            res.status(500).send({ error: err })
+        }
+        res.status(200).send({ data: data })
+    })
+
 }
 
 function updateFavorito(req, res) {
-    var params = req.body
-    res.status(200).send({ update: true, favorito: params })
+    var id = req.params.id
+    var body = req.body
+
+    Favorito.findByIdAndUpdate(id, body, (err, data) => {
+        if (err) {
+            res.status(500).send({ err: 'Error al actualizar' })
+        }
+
+        res.status(200).send(data)
+    })
 }
 
 function deleteFavorito(req, res) {
-    var params = req.body
-    res.status(200).send({ delete: true, favorito: params })
+    var id = req.params.id
+
+    Favorito.findByIdAndRemove(id, (err, data) => {
+        if (err) {
+            res.status(500).send({ err: 'Error al eliminar registro' })
+        }
+        res.status(200).send(data)
+    })
 }
 
 
 module.exports = {
-    prueba,
     getFavorito,
     getFavoritos,
     saveFavorito,
